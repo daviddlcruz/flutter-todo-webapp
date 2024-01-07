@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:web_app/constants/colors.dart';
 import 'package:web_app/model/todo.dart';
@@ -103,10 +104,17 @@ class _HomeState extends State<Home> {
         ]));
   }
 
-  void _handleToDoChange(ToDo toDo) {
+  Future<void> _handleToDoChange(ToDo toDo) async {
+    bool isNowDone = !toDo.isDone;
+
     setState(() {
-      toDo.isDone = !toDo.isDone;
+      toDo.isDone = isNowDone;
     });
+
+    if (isNowDone) {
+      final player = AudioPlayer();
+      await player.play(AssetSource('audio/coins.wav'));
+    }
   }
 
   void _deleteToDoItem(String id) {
